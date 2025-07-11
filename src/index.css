@@ -1,1 +1,9 @@
 @import "tailwindcss";
+ /* .date-input-no-icon::-webkit-calendar-picker-indicator {
+          display: none;
+        } */
+        /* .date-input-no-icon {
+          -webkit-appearance: none;
+          appearance: none;
+        } */
+      

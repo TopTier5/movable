@@ -3,6 +3,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
+import UserPage from "./pages/UserPage";
+import Settings from "./pages/Settings";
 
 
 const movAbleRouter = createBrowserRouter([
@@ -10,6 +12,8 @@ const movAbleRouter = createBrowserRouter([
 { path: '/login', element: <Login /> },
 { path: '/register', element: <Register /> },
 { path: '/*', element: <NotFound /> },
+{ path: '/userpage', element: <UserPage /> },
+{ path: '/settings', element: <Settings /> },
 
 ]);
 
