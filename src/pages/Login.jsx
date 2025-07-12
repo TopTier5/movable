@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar"
-import { ChevronLeft, Eye } from "lucide-react"
+import { ChevronLeft, Eye } from "lucide-react";
+import { Link } from "react-router";
 
 
 
@@ -13,10 +14,11 @@ export default function () {
 
             <div className="bg-[#EFF7FF] flex items-center justify-center">
                 <div className="min-h-screen py-10 mt-8">
+                    <Link to="/">
                     <button className="flex items-center text-sky-400 hover:text-blue-600 mb-6 transition-colors cursor-pointer mr-10">
                         <ChevronLeft size={16} />
                         <span className="text-sm font-semibold ml-1 cursor-pointer">Back to Home</span>
-                    </button>
+                    </button></Link>
 
                     <div className="text-center mb-8">
                         <h1 className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">MoVable</h1>
@@ -70,9 +72,10 @@ export default function () {
 
                             <div className="text-center">
                                 <span className="text-gray-600 text-sm">Don't have an account? </span>
-                                <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                                <Link to="/register">
+                                <button className="text-blue-600 hover:text-blue-700 text-sm font-medium cursor-pointer">
                                     Register here
-                                </button>
+                                </button></Link>
                             </div>
                         </div>
                     </div>

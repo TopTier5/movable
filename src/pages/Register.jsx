@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import { ChevronLeft, CreditCard, ShoppingBag, User } from "lucide-react";
 import { Upload, FileText } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router";
 
 
 export default function Register() {
@@ -41,10 +42,11 @@ export default function Register() {
 
       <div className="bg-[#EFF7FF] flex items-center justify-center">
         <div className="min-h-screen py-10">
+          <Link to="/">
           <button className="flex items-center text-sky-400 hover:text-blue-600 mb-6 transition-colors cursor-pointer">
             <ChevronLeft size={16} />
             <span className="text-sm font-semibold ml-1 cursor-pointer">Back to Home</span>
-          </button>
+          </button></Link>
 
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">MoVable</h1>
