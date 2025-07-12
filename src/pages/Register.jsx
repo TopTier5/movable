@@ -154,7 +154,7 @@ export default function Register() {
                 </>
               )}
 
-              {/* Case 3 */}
+             
               {step === 3 && (
                 <>
                 <div className="flex items-center space-x-3 mb-6">
@@ -207,7 +207,7 @@ export default function Register() {
                 </>
               )}
 
-              {/* Case 4 */}
+             
               {step === 4 && (
                 <>
                 <div className="flex items-center space-x-3 mb-6">
@@ -262,7 +262,7 @@ export default function Register() {
                 </>
               )}
 
-              {/* Case 5 */}
+              
               {step === 5 && (
                 <>
                  <div className="flex items-center space-x-3 mb-6">
@@ -290,7 +290,7 @@ export default function Register() {
                 </>
               )}
 
-              {/* Navigation Buttons */}
+             
               <div className="flex justify-between pt-4">
                 {step > 1 && (
                   <button
