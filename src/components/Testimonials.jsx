@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Testimonials() {
     return (
-        <div className="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
+        <div className="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8 mb-8">
             {/* Testimonials Header */}
             <div className="max-w-4xl mx-auto text-center mb-12 lg:mb-16">
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">

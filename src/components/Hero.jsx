@@ -46,7 +46,7 @@ export default function Hero() {
             </div>
 
 
-            <button className="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-8 py-4 duration-200 rounded-full transition-colors font-semibold flex items-center mx-auto shadow-lg">
+            <button className="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-8 py-4 duration-200 rounded-full transition-colors font-semibold flex items-center mx-auto shadow-lg mb-10">
                 <User className="w-5 h-5 mr-2" />
                 Register Now
             </button>
