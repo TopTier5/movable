@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-import { useState } from 'react';
-import { Bell, Settings, Car, History, User } from 'lucide-react'; 
+import { Bell, Settings, Car, History, User } from 'lucide-react';
 
-function UserNavbar() {
+function UserNav({ onTabChange }) {
   const [activeTab, setActiveTab] = useState('bookRide'); 
+
+  // Call onTabChange whenever activeTab changes
+  useEffect(() => {
+    if (onTabChange) {
+      onTabChange(activeTab);
+    }
+  }, [activeTab, onTabChange]);
+
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+  };
 
   return (
     <nav className="bg-white p-6 shadow-sm border-b border-gray-200">
-      {/* Top section of the Navbar */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Welcome back, Christiana!</h1>
@@ -27,16 +36,15 @@ function UserNavbar() {
       </div>
       <hr className="border-t border-slate-200" />
 
-
       {/* Bottom section of the Navbar*/}
-      <div className="flex  border-gray-300">
+      <div className="flex border-gray-300">
         <button
           className={`flex items-center px-6 py-3 text-lg font-medium transition-colors duration-200 ${
             activeTab === 'bookRide'
               ? 'text-blue-600 border-b-2 border-blue-600'
               : 'text-gray-600 hover:text-gray-900'
           }`}
-          onClick={() => setActiveTab('bookRide')}
+          onClick={() => handleTabClick('bookRide')}
         >
           <Car className="w-5 h-5 mr-2" />
           Book a Ride
@@ -47,7 +55,7 @@ function UserNavbar() {
               ? 'text-blue-600 border-b-2 border-blue-600'
               : 'text-gray-600 hover:text-gray-900'
           }`}
-          onClick={() => setActiveTab('rideHistory')}
+          onClick={() => handleTabClick('rideHistory')}
         >
           <History className="w-5 h-5 mr-2" />
           Ride History
@@ -58,7 +66,7 @@ function UserNavbar() {
               ? 'text-blue-600 border-b-2 border-blue-600'
               : 'text-gray-600 hover:text-gray-900'
           }`}
-          onClick={() => setActiveTab('profile')}
+          onClick={() => handleTabClick('profile')}
         >
           <User className="w-5 h-5 mr-2 " />
           Profile
@@ -68,4 +76,4 @@ function UserNavbar() {
   );
 }
 
-export default UserNavbar;
+export default UserNav;

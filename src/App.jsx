@@ -7,6 +7,8 @@ import UserPage from "./pages/UserPage";
 import Settings from "./pages/Settings";
 
 
+
+
 const movAbleRouter = createBrowserRouter([
 { path: '/', element: <Home /> },
 { path: '/login', element: <Login /> },
@@ -14,6 +16,7 @@ const movAbleRouter = createBrowserRouter([
 { path: '/*', element: <NotFound /> },
 { path: '/userpage', element: <UserPage /> },
 { path: '/settings', element: <Settings /> },
+
 
 ]);
 
