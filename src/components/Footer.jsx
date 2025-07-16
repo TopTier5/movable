@@ -10,7 +10,7 @@ export default function Footer() {
                     <div className="col-span-1 lg:col-span-1">
                         <div className="flex items-center gap-2 mb-4 ">
                             <img src={Logo} alt="MovAble Logo" className="w-8 h-8 bg-white" />
-                            <span className="text-2xl font-semibold">MovAble</span>
+                            <span className="text-2xl font-semibold">MoVable</span>
                         </div>
                         <p className="text-sm leading-6 text-slate-300 mb-4">
                             Accessible transportation for people with disabilities in Ghana. Safe, reliable, and designed with you in mind.
@@ -27,7 +27,7 @@ export default function Footer() {
                         <ul className="space-y-2">
                             <li><a href="#" className="text-sm text-slate-300 hover:text-blue-300 transition-colors duration-300">Home</a></li>
                             <li><a href="#" className="text-sm text-slate-300 hover:text-blue-300 transition-colors duration-300">Register as Rider</a></li>
-                            <li><a href="#" className="text-sm text-slate-300 hover:text-blue-300 transition-colors duration-300">Become a Driver</a></li>
+                            {/* <li><a href="#" className="text-sm text-slate-300 hover:text-blue-300 transition-colors duration-300">Become a Driver</a></li> */}
                             <li><a href="#" className="text-sm text-slate-300 hover:text-blue-300 transition-colors duration-300">Features</a></li>
                         </ul>
                     </div>
@@ -49,7 +49,7 @@ export default function Footer() {
                         <ul className="space-y-2">
                             <li className="flex items-center gap-3 text-sm">
                                 <Phone className="text-blue-400 w-4 h-4 stroke-[3]" />
-                                <span className="text-slate-300">+233 XX XXX XXXX</span>
+                                <span className="text-slate-300">+233 546293504</span>
                             </li>
                             <li className="flex items-center gap-3 text-sm">
                                 <Mail className="text-blue-400 w-4 h-4 stroke-[3]" />
@@ -68,7 +68,7 @@ export default function Footer() {
                 {/* Bottom Row */}
                 <div className="flex flex-col md:flex-row justify-between items-center text-sm text-slate-300 space-y-4 md:space-y-0">
                     <div className="text-center md:text-left">
-                        © 2024 MovAble Ghana. All rights reserved.
+                        © 2025 MoVable Ghana. All rights reserved.
                     </div>
                     <div className="flex flex-wrap justify-center md:justify-end space-x-6">
                         <a href="#" className="hover:text-blue-300 transition-colors duration-300">Privacy Policy</a>
