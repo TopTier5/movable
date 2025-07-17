@@ -179,7 +179,7 @@ export default function Register() {
       if (result.success) {
         localStorage.setItem('authToken', result.token);
         alert("Registration successful!");
-        navigate('/userpage');
+        navigate('/login');
       } else {
         setError(result.message || "Registration failed. Please try again.");
       }

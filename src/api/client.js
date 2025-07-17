@@ -9,6 +9,15 @@ export const apiFetcher = async (url) => {
     return response.data;
 }
 
+// Login function
+export const loginUser = async (phoneNumber, password) => {
+    const response = await apiClient.post('/api/auth/login', {
+        phoneNumber,
+        password
+    });
+    return response.data;
+};
+
 export const registerUser = async (formData) => {
     const data = new FormData();
     
