@@ -49,7 +49,7 @@ export default function () {
                                 <div className="relative">
                                     <input
                                         type="password"
-                                        placeholder="enter your password"
+                                        placeholder="Enter your password"
                                         className="w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
 
                                     <button
@@ -98,11 +98,6 @@ export default function () {
                     </div>
                   </div>
             </div>
-            
-
-
-
-
         </>
     )
 }
