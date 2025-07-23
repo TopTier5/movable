@@ -17,7 +17,7 @@ export default function Navbar() {
 
                 <div className="flex items-center space-x-6">
                    <Link to="/"><span className="font-sm font-semibold cursor-pointer hover:text-blue-400 transition colors">Home</span></Link>
-                <Link to="/register"><span className="font-sm font-semibold cursor-pointer hover:text-blue-400 transition colors">Register as Rider</span></Link>
+                <Link to="/register"><span className="font-sm font-semibold cursor-pointer hover:text-blue-400 transition colors">Register as User</span></Link>
                 </div>
 
                 <div className="flex items-center space-x-4">

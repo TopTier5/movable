@@ -1,6 +1,6 @@
 import image1 from "../assets/images/image1.png";
 import { Shield, User } from "lucide-react";
-
+import { Link } from "react-router";
 
 
 
@@ -45,11 +45,11 @@ export default function Hero() {
                 </div>
             </div>
 
-
+            <Link to="/register">
             <button className="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-8 py-4 duration-200 rounded-full transition-colors font-semibold flex items-center mx-auto shadow-lg mb-10">
                 <User className="w-5 h-5 mr-2" />
                 Register Now
-            </button>
+            </button></Link>
                 </div>
             </div>
         </div>
