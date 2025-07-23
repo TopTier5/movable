@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router';
-import { Bell, ShieldCheck, Smartphone, LogOut, User as UserIcon,ChevronLeft, Moon } from 'lucide-react';
+import { Bell, ShieldCheck, Smartphone, LogOut, User as UserIcon, ChevronLeft, Moon, Volume2 } from 'lucide-react';
+import { VoiceProvider, useVoice } from '../components/VoiceContext';
 
 const SettingsPage = () => {
   const [locationEnabled, setLocationEnabled] = useState(true);
@@ -10,9 +11,12 @@ const SettingsPage = () => {
   const [rideReminders, setRideReminders] = useState(true);
   const [promotions, setPromotions] = useState(false);
 
+  // Voice functionality
+  const { isVoiceEnabled, setIsVoiceEnabled } = useVoice();
+
   return (
     <header>
-         <nav className='flex border w-full border border-white shadow-md'>
+         <nav className='flex w-full border border-white shadow-md'>
             <div className='ml-50 flex mt-7'>
         <Link to={"/userpage"} className='flex mr-7 mb-6 mt-2 cursor-pointer hover:text-blue-500'><ChevronLeft className="w-6 h-6 text-gray-700 mr-3 hover:text-blue-500" />
         <span className='mr-2'>Back to Dashboard</span> 
@@ -22,7 +26,18 @@ const SettingsPage = () => {
         </nav>
     <div className={darkMode ? 'bg-gray-900 text-white max-w-3xl min-h-screen m-auto p-6 mt-5' : 'bg-white text-gray-900 min-h-screen max-w-3xl m-auto p-6 mt-5'}>
        
-      
+      {/* Accessibility Section */}
+      <section className="mb-10 border rounded-lg p-6 bg-white dark:bg-gray-800 dark:border-gray-700">
+        <h2 className="text-xl font-semibold flex items-center mb-4">
+          <Volume2 className="w-5 h-5 text-orange-600 mr-2" /> Accessibility
+        </h2>
+        <Toggle 
+          label="Voice Reader" 
+          description="Read content aloud when clicked or tapped" 
+          enabled={isVoiceEnabled} 
+          onToggle={setIsVoiceEnabled} 
+        />
+      </section>
 
       {/* Notifications Section */}
       <section className="mb-10 border rounded-lg p-6 bg-white dark:bg-gray-800 dark:border-gray-700">

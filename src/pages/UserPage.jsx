@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, Clock, User, MapPin, Plus, Square, ChevronDown } from 'lucide-react';
 import React from 'react';
 import UserNav from '../components/UserNav';
@@ -9,7 +9,9 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import format from 'date-fns/format';
 import RideHistory from '../components/RideHistory'; 
 import ProfileContent from '../components/ProfilePage'; 
-import InfoSection from '../components/InfoSection'; 
+import InfoSection from '../components/InfoSection';
+import { getUserFromStorage, isAuthenticated } from '../api/client.js';
+import { useNavigate } from 'react-router';
 
 function UserPage() {
   const [showDateTimePicker, setShowDateTimePicker] = useState(false);
@@ -18,6 +20,23 @@ function UserPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is authenticated and get user data
+    if (!isAuthenticated()) {
+      navigate('/login');
+      return;
+    }
+
+    const user = getUserFromStorage();
+    if (user) {
+      setUserData(user);
+    }
+    setLoading(false);
+  }, [navigate]);
 
   const handleNavbarTabChange = (tabName) => {
     if (tabName !== currentContentTab) {
@@ -30,9 +49,20 @@ function UserPage() {
     return time ? format(time, 'hh:mm a') : 'Select';
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading your profile...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col font-sans">
-      <UserNav onTabChange={handleNavbarTabChange} />
+      <UserNav onTabChange={handleNavbarTabChange} userData={userData} />
 
       <main className="flex flex-1 overflow-hidden">
         <aside className="w-full md:w-140 bg-white p-6 flex flex-col shadow-lg border-r border-gray-200 overflow-y-auto">
@@ -112,6 +142,13 @@ function UserPage() {
             </div>
           ) : (
             <div className='border py-3 px-5 border-slate-300 rounded-lg shadow-md'>
+              {userData?.fullName && (
+                <div className="mb-4">
+                  <p className="text-lg text-blue-600 font-semibold">
+                    Welcome back, {userData.fullName.split(' ')[0]}!
+                  </p>
+                </div>
+              )}
               <h2 className="text-xl font-bold text-gray-900 mb-6">Get a ride</h2>
               <div className="space-y-4">
                 <div className="relative">
@@ -176,13 +213,13 @@ function UserPage() {
 
           {currentContentTab === 'rideHistory' && (
             <div className="absolute inset-0 bg-white/90 p-4 overflow-y-auto">
-              <RideHistory />
+              <RideHistory userData={userData} />
             </div>
           )}
 
           {currentContentTab === 'profile' && (
             <div className="absolute inset-0 bg-white/90 p-4 overflow-y-auto">
-              <ProfileContent />
+              <ProfileContent userData={userData} />
             </div>
           )}
         </div>

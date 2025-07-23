@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { Bell, Settings, Car, History, User } from 'lucide-react';
 
-function UserNav({ onTabChange }) {
+function UserNav({ onTabChange, userData }) {
   const [activeTab, setActiveTab] = useState('bookRide'); 
 
   // Call onTabChange whenever activeTab changes
@@ -16,11 +16,21 @@ function UserNav({ onTabChange }) {
     setActiveTab(tabName);
   };
 
+  // Get the first name from full name, or fallback to a generic greeting
+  const getDisplayName = () => {
+    if (userData?.fullName) {
+      return userData.fullName.split(' ')[0];
+    }
+    return 'User';
+  };
+
   return (
     <nav className="bg-white p-6 shadow-sm border-b border-gray-200">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Welcome back, Christiana!</h1>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Welcome back, {getDisplayName()}!
+          </h1>
           <p className="text-gray-600 mt-1">Ready for your next accessible ride?</p>
         </div>
         <div className="flex items-center space-x-4">
