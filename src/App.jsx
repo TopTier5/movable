@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import UserPage from "./pages/UserPage";
 import Settings from "./pages/Settings";
+import EditProfile from "./pages/EditProfile";
 
 
 
@@ -16,6 +17,7 @@ const movAbleRouter = createBrowserRouter([
 { path: '/*', element: <NotFound /> },
 { path: '/userpage', element: <UserPage /> },
 { path: '/settings', element: <Settings /> },
+{ path: '/editprofile', element: <EditProfile />},
 
 
 ]);
