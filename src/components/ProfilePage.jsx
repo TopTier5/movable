@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from "react-router";
 import { User, Mail, Phone, Calendar, Shield, MapPin } from 'lucide-react';
 
 function ProfileContent({ userData }) { 
@@ -84,9 +84,10 @@ function ProfileContent({ userData }) {
         <p className="text-gray-700 text-sm font-mono">{userData.id}</p>
       </div>
 
-      <button className="mt-8 w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200">
+        <Link to="/editprofile">
+      <button className="mt-8 w-full bg-blue-600 text-white py-3 cursor-pointer rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200">
         Edit Profile
-      </button>
+      </button></Link>
     </div>
   );
 }
