@@ -64,6 +64,7 @@ export const fetchUserProfile = async () => {
     }
 };
 
+// ✅ FIXED: Registration function now uses user's actual password
 export const registerUser = async (formData) => {
     const data = new FormData();
     
@@ -73,7 +74,9 @@ export const registerUser = async (formData) => {
     data.append('typeOfDisability', formData.disabilityType);
     data.append('assistanceNeeds', formData.assistanceDescription);
     data.append('employmentStatus', formData.employmentStatus);
-    data.append('password', '@123456');
+    
+    // ✅ Use the actual password from the form instead of hardcoded one
+    data.append('password', formData.password);
     
     if (formData.ghanaCard) {
         data.append('ghanaCard', formData.ghanaCard);

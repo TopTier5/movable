@@ -1,16 +1,21 @@
 import Navbar from "../components/Navbar";
-import { ChevronLeft, CreditCard, ShoppingBag, User, X, Eye } from "lucide-react";
+import { ChevronLeft, CreditCard, ShoppingBag, User, X, Eye, EyeOff } from "lucide-react";
 import { Upload, FileText } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { registerUser } from "../api/client.js";
-
 
 export default function Register() {
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  // Added password states
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -23,7 +28,6 @@ export default function Register() {
     employmentStatus: "",
   });
 
- 
   const [ghanaCardFiles, setGhanaCardFiles] = useState([]);
   const [medicalDocFiles, setMedicalDocFiles] = useState([]);
 
@@ -79,7 +83,6 @@ export default function Register() {
         }
         const updated = prev.filter(f => f.id !== fileId);
 
-
         setFormData(prevData => ({
           ...prevData,
           ghanaCard: updated.length > 0 ? (updated.length === 1 ? updated[0].file : updated.map(f => f.file)) : null
@@ -94,7 +97,6 @@ export default function Register() {
           URL.revokeObjectURL(fileToRemove.preview);
         }
         const updated = prev.filter(f => f.id !== fileId);
-
 
         setFormData(prevData => ({
           ...prevData,
@@ -163,7 +165,60 @@ export default function Register() {
     );
   };
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, 5));
+  // Add validation for step navigation
+  const validateStep = (currentStep) => {
+    switch (currentStep) {
+      case 1:
+        if (!formData.fullName || !formData.phoneNumber || !password || !confirmPassword) {
+          setError("Please fill in all required fields");
+          return false;
+        }
+        if (password !== confirmPassword) {
+          setError("Passwords do not match");
+          return false;
+        }
+        if (password.length < 6) {
+          setError("Password must be at least 6 characters long");
+          return false;
+        }
+        break;
+      case 2:
+        if (ghanaCardFiles.length === 0) {
+          setError("Please upload your Ghana Card");
+          return false;
+        }
+        break;
+      case 3:
+        if (medicalDocFiles.length === 0) {
+          setError("Please upload your medical documentation");
+          return false;
+        }
+        break;
+      case 4:
+        if (!formData.disabilityType || !formData.assistanceDescription) {
+          setError("Please fill in all required fields");
+          return false;
+        }
+        break;
+      case 5:
+        if (!formData.employmentStatus) {
+          setError("Please select your employment status");
+          return false;
+        }
+        break;
+      default:
+        break;
+    }
+    setError("");
+    return true;
+  };
+
+  const nextStep = () => {
+    if (validateStep(step)) {
+      setStep((prev) => Math.min(prev + 1, 5));
+    }
+  };
+
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
   const handleSubmit = async (e) => {
@@ -171,14 +226,28 @@ export default function Register() {
     setIsLoading(true);
     setError("");
 
+    // Final validation
+    if (!validateStep(5)) {
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const result = await registerUser(formData);
+      // Include password in the form data
+      const submissionData = {
+        ...formData,
+        password: password, // Add the user's password
+        ghanaCard: formData.ghanaCard,
+        medicalDoc: formData.medicalDoc
+      };
+
+      const result = await registerUser(submissionData);
 
       console.log("Registration result:", result);
 
       if (result.success) {
         localStorage.setItem('authToken', result.token);
-        alert("Registration successful!");
+        alert("Registration successful! Please login with your credentials.");
         navigate('/login');
       } else {
         setError(result.message || "Registration failed. Please try again.");
@@ -228,53 +297,74 @@ export default function Register() {
                     type="text"
                     name="fullName"
                     placeholder="Enter your fullname"
+                    value={formData.fullName}
                     required
                     className="w-full border px-3 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onChange={handleChange}
                   />
+                  
                   <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
                   <input
                     type="tel"
                     name="phoneNumber"
                     placeholder="(+233 XX XXX XXXX)"
+                    value={formData.phoneNumber}
                     required
                     className="w-full border px-3 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onChange={handleChange}
                   />
+                  
                   <label className="block text-sm font-medium text-gray-700 mb-1">Email Address (Optional)</label>
                   <input
                     type="email"
                     name="email"
                     placeholder="youremail@example.com"
+                    value={formData.email}
                     className="w-full border px-3 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onChange={handleChange}
                   />
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                  
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Password *</label>
                   <div className="relative">
                     <input
-                      type="password"
-                      placeholder="Enter your password"
-                      className="w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
-
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password (min. 6 characters)"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                    />
                     <button
                       type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer">
-                      <Eye className="w-5 h-5" />
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer"
+                    >
+                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                  
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password *</label>
                   <div className="relative">
                     <input
-                      type="password"
+                      type={showConfirmPassword ? "text" : "password"}
                       placeholder="Confirm your password"
-                      className="w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
-
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      className="w-full px-4 py-2 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                    />
                     <button
                       type="button"
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer">
-                      <Eye className="w-5 h-5" />
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer"
+                    >
+                      {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
+                  
+                  {password && confirmPassword && password !== confirmPassword && (
+                    <p className="text-red-500 text-sm">Passwords do not match</p>
+                  )}
                 </>
               )}
 
@@ -408,6 +498,7 @@ export default function Register() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Type of Disability *</label>
                   <select
                     name="disabilityType"
+                    value={formData.disabilityType}
                     required
                     onChange={handleChange}
                     className="w-full cursor-pointer border px-3 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -426,6 +517,7 @@ export default function Register() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Describe Assistance Needed*</label>
                   <textarea
                     name="assistanceDescription"
+                    value={formData.assistanceDescription}
                     required
                     placeholder="Please describe in detail any assistance you need during rides. example: I use a wheelchair and need help from the driver transfering from wheelchair to seat"
                     onChange={handleChange}
@@ -459,6 +551,7 @@ export default function Register() {
                   <label className="block font-semibold"></label>
                   <select
                     name="employmentStatus"
+                    value={formData.employmentStatus}
                     required
                     onChange={handleChange}
                     className="w-full cursor-pointer border px-3 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
