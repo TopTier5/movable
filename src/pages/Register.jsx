@@ -197,16 +197,10 @@ export default function Register() {
 
       <div className="bg-[#EFF7FF] flex items-center justify-center">
         <div className="min-h-screen py-10">
-          <Link to="/">
-            <button className="flex items-center text-sky-400 hover:text-blue-600 mb-6 transition-colors cursor-pointer">
-              <ChevronLeft size={16} />
-              <span className="text-sm font-semibold ml-1 cursor-pointer">Back to Home</span>
-            </button>
-          </Link>
-
+          
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">MoVable</h1>
-            <p className="text-xl font-bold mb-2">Rider Registration</p>
+            <p className="text-xl font-bold mb-2">User Registration</p>
             <span className="text-sm text-gray-800">
               Step {step} of 5 - Register for accessible transportation in Ghana
             </span>

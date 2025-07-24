@@ -47,12 +47,7 @@ export default function () {
 
             <div className="bg-[#EFF7FF] flex items-center justify-center">
                 <div className="min-h-screen py-10 mt-8">
-                    <Link to="/">
-                        <button className="flex items-center text-sky-400 hover:text-blue-600 mb-6 transition-colors cursor-pointer mr-10">
-                            <ChevronLeft size={16} />
-                            <span className="text-sm font-semibold ml-1 cursor-pointer">Back to Home</span>
-                        </button>
-                    </Link>
+                    
 
                     <div className="text-center mb-8">
                         <h1 className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">MoVable</h1>

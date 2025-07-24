@@ -96,9 +96,11 @@ export default function EditProfile() {
 
             
             <div className="flex justify-center ml-148 ">
+
+                
                 <button
                     type="submit"
-                    className="bg-blue-600  text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+                    className="bg-blue-600 cursor-pointer text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
                 >
                     💾   Save Changes
                 </button>

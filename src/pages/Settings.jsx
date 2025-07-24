@@ -70,13 +70,18 @@ const SettingsPage = () => {
       <section className="border rounded-lg p-6 bg-white dark:bg-gray-800 dark:border-gray-700">
         <h2 className="text-xl font-semibold mb-4">Account</h2>
         <div className="mb-4">
+
+          <Link to="/editprofile">
           <button className="flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-md w-full text-left hover:bg-gray-200 dark:hover:bg-gray-600">
             <UserIcon className="w-5 h-5 mr-2" /> Edit Profile
-          </button>
+          </button></Link>
         </div>
+
+
+        <Link to="/">
         <button className="flex items-center px-4 py-2 border border-red-500 text-red-500 rounded-md w-full hover:bg-red-100 dark:hover:bg-red-900">
           <LogOut className="w-5 h-5 mr-2" /> Logout
-        </button>
+        </button></Link>
       </section>
     </div>
     </header>
