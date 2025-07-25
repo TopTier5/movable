@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, Clock, User, MapPin, Plus, Square, ChevronDown, Navigation, Star, Users, Car, Zap, Shield } from 'lucide-react';
-import React from 'react';
 import UserNav from '../components/UserNav';
 import { Dialog, DialogContent, Button, Typography, Box } from '@mui/material';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
@@ -10,7 +9,7 @@ import format from 'date-fns/format';
 import RideHistory from '../components/RideHistory'; 
 import ProfileContent from '../components/ProfilePage'; 
 import InfoSection from '../components/InfoSection';
-import { getUserFromStorage, isAuthenticated } from '../api/client.js';
+import { getUserFromStorage, isAuthenticated, calculateTravelTime, requestRide } from '../api/client.js';
 import { useNavigate } from 'react-router';
 
 function UserPage() {
@@ -33,6 +32,9 @@ function UserPage() {
   const [tripDistance, setTripDistance] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [mapUrl, setMapUrl] = useState("https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.6950467062625!2d-0.22777702688922322!3d5.611976033088184!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf997d7b6d423b%3A0x85e06ae906bdf2d7!2sMarwako%20Abelemkpe%20Branch!5e0!3m2!1sen!2sgh!4v1752181502461!5m2!1sen!2sgh");
+
+  // API Integration state
+  const [travelTimeData, setTravelTimeData] = useState(null);
 
   // Ghana locations for autocomplete suggestions
   const [pickupSuggestions, setPickupSuggestions] = useState([]);
@@ -172,7 +174,7 @@ function UserPage() {
     setMapUrl(routeUrl);
   };
 
-  // New function to handle search
+  // Updated function to handle search with API integration
   const handleSearch = async () => {
     if (!pickupLocation.trim() || !dropoffLocation.trim()) {
       alert('Please enter both pickup and dropoff locations');
@@ -181,34 +183,78 @@ function UserPage() {
 
     setSearchingRides(true);
     
+    try {
+      // 🔥 API INTEGRATION 1: Get real travel time and distance
+      const travelResponse = await calculateTravelTime(pickupLocation, dropoffLocation);
+      
+      if (travelResponse.success) {
+        setTravelTimeData(travelResponse.data);
+        setTripDistance(travelResponse.data.distance);
+        setEstimatedTime(travelResponse.data.duration_in_traffic || travelResponse.data.duration);
+      } else {
+        // Fallback to mock data if API fails
+        const distance = Math.floor(Math.random() * 15) + 5;
+        const time = Math.floor(distance * 2.5) + Math.floor(Math.random() * 10);
+        setTripDistance(`${distance}.${Math.floor(Math.random() * 9)} km`);
+        setEstimatedTime(`${time}-${time + 5} min`);
+      }
+    } catch (error) {
+      console.error('Error getting travel time:', error);
+      // Fallback to mock data
+      const distance = Math.floor(Math.random() * 15) + 5;
+      const time = Math.floor(distance * 2.5) + Math.floor(Math.random() * 10);
+      setTripDistance(`${distance}.${Math.floor(Math.random() * 9)} km`);
+      setEstimatedTime(`${time}-${time + 5} min`);
+    }
+    
     // Update map with route
     updateMapWithRoute(pickupLocation, dropoffLocation);
     
-    // Calculate mock trip details
-    setTimeout(() => {
-      // Mock calculation based on location names (in real app, use Google Distance Matrix API)
-      const distance = Math.floor(Math.random() * 15) + 5; // 5-20 km
-      const time = Math.floor(distance * 2.5) + Math.floor(Math.random() * 10); // rough time estimate
-      
-      setTripDistance(`${distance}.${Math.floor(Math.random() * 9)} km`);
-      setEstimatedTime(`${time}-${time + 5} min`);
-      setSearchingRides(false);
-      setShowRideOptions(true);
-    }, 2000);
+    setSearchingRides(false);
+    setShowRideOptions(true);
   };
 
   const handleRideSelect = (ride) => {
     setSelectedRide(ride);
   };
 
-  const handleBookRide = () => {
+  // Updated function to handle booking with API integration
+  const handleBookRide = async () => {
     if (!selectedRide) {
       alert('Please select a ride option');
       return;
     }
     
-    alert(`Booking ${selectedRide.name} from ${pickupLocation} to ${dropoffLocation} for ${selectedRide.price}`);
-    // Here you would typically make an API call to book the ride
+    try {
+      // 🔥 API INTEGRATION 2: Submit ride request
+      const rideDetails = {
+        userId: userData._id, // Assuming userData has _id field
+        origin: pickupLocation,
+        destination: dropoffLocation,
+        pickupTime: selectedTime 
+          ? new Date(selectedDate.toDateString() + ' ' + selectedTime.toTimeString()).toISOString()
+          : new Date().toISOString(), // Use current time if no specific time selected
+        notes: `Selected ride: ${selectedRide.name}. Trip distance: ${tripDistance}. Estimated time: ${estimatedTime}.`
+      };
+
+      const response = await requestRide(rideDetails);
+      
+      if (response.success) {
+        alert(`✅ Ride booked successfully! Ride ID: ${response.ride._id}`);
+        // Reset the form
+        setPickupLocation('');
+        setDropoffLocation('');
+        setShowRideOptions(false);
+        setSelectedRide(null);
+        setSelectedTime(null);
+        setSelectedDate(new Date());
+      } else {
+        alert('❌ Failed to book ride. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error booking ride:', error);
+      alert('❌ Error booking ride. Please check your connection and try again.');
+    }
   };
 
   if (loading) {

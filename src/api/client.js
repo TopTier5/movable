@@ -94,4 +94,37 @@ export const registerUser = async (formData) => {
     return response.data;
 };
 
+export const calculateTravelTime = async (origin, destination) => {
+    const response = await apiClient.post('/api/maps/travel-time', {
+        origin,
+        destination
+    });
+    return response.data;
+};
+
+// Request a ride
+export const requestRide = async (rideDetails) => {
+    const response = await apiClient.post('/api/rides/request', {
+        userId: rideDetails.userId,
+        origin: rideDetails.origin,
+        destination: rideDetails.destination,
+        pickupTime: rideDetails.pickupTime,
+        notes: rideDetails.notes || ''
+    });
+    return response.data;
+};
+
+export const editProfile = async (profileData) => {
+    const response = await apiClient.put('/api/auth/edit-profile', {
+        userId: profileData.userId,
+        fullName: profileData.fullName,
+        email: profileData.email,
+        address: profileData.address,
+        phoneNumber: profileData.phoneNumber,
+        emergencyContactName: profileData.emergencyContactName,
+        emergencyContactPhone: profileData.emergencyContactPhone
+    });
+    return response.data;
+};
+
 export const imageBaseURL = import.meta.env.VITE_IMAGE_BASE_URL;
